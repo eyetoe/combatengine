@@ -25,10 +25,11 @@ func (a Agent) Attack(d Agent) *Agent {
 }
 
 func (a *Agent) NewTurn() {
-	fmt.Println("Starting new turn")
+	fmt.Println("<---: Starting new turn")
 	for index, cond := range a.Conditions {
 		fmt.Println(index, cond.Name)
-		*a = cond.Affect(*a)
+		cond.Affect(a)
+		//a.Conditions[index].Affect(a)
 	}
 	return
 }
