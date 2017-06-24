@@ -33,6 +33,20 @@ func (a *Agent) NewTurn() {
 	return
 }
 
+func (a *Agent) HealthAdjust(h int) {
+	switch {
+	case a.Health.Val+h > a.Health.BaseVal:
+		a.Health.Val = a.Health.BaseVal
+	case a.Health.Val+h < 1:
+		a.Health.Val = 0
+		a.Dead = true
+	default:
+		a.Health.Val = a.Health.Val + h
+	}
+	return
+
+}
+
 func (a Agent) MaxFocus() int {
 	return a.Int.Val / 10
 }

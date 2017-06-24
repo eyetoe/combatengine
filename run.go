@@ -42,14 +42,13 @@ func main() {
 	Hero.Attack(Monster)
 	Monster.Attack(Hero)
 	fmt.Println()
-	fmt.Println("Hero Health: ", Hero.Health.Val)
-	Hero.NewTurn()
-	fmt.Println("Hero Health: ", Hero.Health.Val)
-	Hero.NewTurn()
-	fmt.Println("Hero Health: ", Hero.Health.Val)
-	Hero.NewTurn()
-	fmt.Println("Hero Health: ", Hero.Health.Val)
 
-	fmt.Println(Roll(1, 20))
+	for l := 0; l < 3; l++ {
+		Hero.NewTurn()
+		fmt.Println("Hero Health: ", Hero.Health.Val)
+	}
+
+	fmt.Println("Die Roll:", Roll(1, 20))
+	Hero.Print()
 
 }
