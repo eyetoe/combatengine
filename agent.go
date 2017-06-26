@@ -12,7 +12,25 @@ type Agent struct {
 	Dead   bool
 	Focus  int
 
-	Conditions []Condition
+	//Conditions []Condition
+	Conditions map[string]Condition
+}
+
+// map maker method
+func (d *Agent) addCondition(c Condition) {
+	//if len(d.Conditions) == 0 { // also works
+	if d.Conditions == nil {
+		d.Conditions = make(map[string]Condition)
+		d.Conditions[c.Name] = c
+	} else {
+		d.Conditions[c.Name] = c
+	}
+	return
+}
+
+func (d *Agent) removeCondition(c Condition) {
+	delete(d.Conditions, c.Name)
+	return
 }
 
 func (a Agent) Attack(d Agent) *Agent {
@@ -26,10 +44,9 @@ func (a Agent) Attack(d Agent) *Agent {
 
 func (a *Agent) NewTurn() {
 	fmt.Println("<---: Starting new turn")
-	for index, cond := range a.Conditions {
-		fmt.Println(index, cond.Name)
-		cond.Affect(a)
-		//a.Conditions[index].Affect(a)
+	for c, f := range a.Conditions {
+		fmt.Println("Applying: ", c)
+		f.Affect(a)
 	}
 	return
 }

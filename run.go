@@ -26,26 +26,34 @@ var Hero = Agent{
 
 func main() {
 
-	newCond := Regeneration
-	newCond.Apply()
-	//Hero.Conditions = append(Hero.Conditions, Regeneration)
-	Hero.Conditions = append(Hero.Conditions, newCond)
+	/*
+		newCond := Regeneration
+		newCond.Apply()
+		//Hero.Conditions = append(Hero.Conditions, Regeneration)
+		Hero.Conditions = append(Hero.Conditions, newCond)
 
-	newCond2 := OnFire
-	newCond2.Apply()
-	Hero.Conditions = append(Hero.Conditions, newCond2)
+		newCond2 := OnFire
+		newCond2.Apply()
+		Hero.Conditions = append(Hero.Conditions, newCond2)
+	*/
 
-	Hero.Print()
-	fmt.Println()
-	Monster.Print()
-	fmt.Println()
-	Hero.Attack(Monster)
-	Monster.Attack(Hero)
-	fmt.Println()
+	Hero.addCondition(Regeneration)
+	Hero.addCondition(OnFire)
+	/*
+		Hero.Print()
+		fmt.Println()
+		Monster.Print()
+		fmt.Println()
+		Hero.Attack(Monster)
+		Monster.Attack(Hero)
+		fmt.Println()
+	*/
 
 	for l := 0; l < 3; l++ {
 		Hero.NewTurn()
 		fmt.Println("Hero Health: ", Hero.Health.Val)
+		fmt.Println("boop")
+		fmt.Println()
 	}
 
 	fmt.Println("Die Roll:", Roll(1, 20))

@@ -8,10 +8,12 @@ type Condition struct {
 	Affect func(*Agent)
 }
 
+/*
 func (c *Condition) Apply() {
 	c.Duration = c.BaseDuration
 	return
 }
+*/
 
 var Regeneration = Condition{
 	Name:         "Natural Health Recovery",
