@@ -7,7 +7,7 @@ type Condition struct {
 }
 
 var Regeneration = Condition{
-	Name:     "Natural Health Recovery",
+	Name:     "Natural Healing",
 	Duration: 0,
 	Affect: func(a *Agent) {
 		a.HealthAdjust(1)
