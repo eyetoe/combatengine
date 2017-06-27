@@ -54,7 +54,7 @@ func (a *Agent) Tick(c Condition) {
 func (a *Agent) NewTurn() {
 	fmt.Println("<---: Starting new turn")
 	for l, c := range a.Conditions {
-		fmt.Println("<: ", l, " applied.")
+		fmt.Println("<: ", l, " ticked...")
 		c.Affect(a)
 		a.Tick(c)
 	}
