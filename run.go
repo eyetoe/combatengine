@@ -2,29 +2,31 @@ package main
 
 import (
 	"fmt"
+
+	. "github.com/eyetoe/foobarbaz/util"
 )
-
-var Monster = Agent{
-	Name:   "Monster",
-	Str:    Stat{"Strength", 10, 10},
-	Int:    Stat{"Intelligence", 10, 10},
-	Dex:    Stat{"Dexterity", 10, 10},
-	Health: Stat{"Health", 10, 10},
-	Dead:   false,
-}
-
-var Hero = Agent{
-	Name:   "Hero",
-	Str:    Stat{"Strength", 10, 10},
-	Int:    Stat{"Intelligence", 10, 10},
-	Dex:    Stat{"Dexterity", 10, 10},
-	Health: Stat{"Health", 10, 5},
-	Dead:   false,
-}
 
 // yo dummy! add interfaces to all items, so they support conditions method which applies conditions
 
 func main() {
+	/*
+		var Monster = Agent{
+			Name:   "Monster",
+			Str:    Stat{"Strength", 10, 10},
+			Int:    Stat{"Intelligence", 10, 10},
+			Dex:    Stat{"Dexterity", 10, 10},
+			Health: Stat{"Health", 10, 10},
+			Dead:   false,
+		}
+	*/
+	var Hero = Agent{
+		Name:   "Hero",
+		Str:    Stat{"Strength", 10, 10},
+		Int:    Stat{"Intelligence", 10, 10},
+		Dex:    Stat{"Dexterity", 10, 10},
+		Health: Stat{"Health", 10, 10},
+		Dead:   false,
+	}
 
 	/*
 		newCond := Regeneration
@@ -39,9 +41,9 @@ func main() {
 
 	Hero.addCondition(Regeneration)
 	Hero.addCondition(OnFire)
-	for l, c := range Hero.Conditions {
-		fmt.Println("Condition:", l, "\n	Turns Left:", c.Duration)
-	}
+	//	for l, c := range Hero.Conditions {
+	//		fmt.Println("Condition:", l, "\n	Turns Left:", c.Duration, " :HP:", Hero.Health.Val)
+	//	}
 	/*
 		Hero.Print()
 		fmt.Println()
@@ -52,13 +54,16 @@ func main() {
 		fmt.Println()
 	*/
 
-	for l := 0; l < 3; l++ {
+	for l := 0; l < 20; l++ {
 		Hero.NewTurn()
-		fmt.Println("Hero Health: ", Hero.Health.Val)
+		Hero.Print()
+		//fmt.Println("Hero Health: ", Hero.Health.Val)
 		for l, c := range Hero.Conditions {
-			fmt.Println("Condition:", l, "\n	Turns Left:", c.Duration)
+			//	fmt.Println("Condition:", l, "\n	Turns Left:", c.Duration)
+			fmt.Println("Condition:", l, "\n	Turns Left:", c.Duration, " :HP:", Hero.Health.Val)
 		}
 		fmt.Println()
+		Continue()
 	}
 
 	//fmt.Println("Die Roll:", Roll(1, 20))

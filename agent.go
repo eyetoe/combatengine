@@ -54,7 +54,7 @@ func (a *Agent) Tick(c Condition) {
 func (a *Agent) NewTurn() {
 	fmt.Println("<---: Starting new turn")
 	for l, c := range a.Conditions {
-		fmt.Println("Applying: ", l)
+		fmt.Println("<: ", l, " applied.")
 		c.Affect(a)
 		a.Tick(c)
 	}
@@ -82,16 +82,12 @@ func (a Agent) MaxFocus() int {
 func (a Agent) Print() {
 	//fmt.Printf("%+v", a)
 	fmt.Println(a.Name)
-	fmt.Println(a.Str)
-	fmt.Println(a.Int)
-	fmt.Println(a.Dex)
-	fmt.Println(a.Health)
-	fmt.Println("Dead?: ", a.Dead)
+	fmt.Println(a.Str, a.Int, a.Dex, a.Health, a.Dead)
 	fmt.Println("Focus Points: ", a.Focus)
-	fmt.Println(a.Conditions)
-	fmt.Println()
-	fmt.Println(a.Str.Name+" Modifier for: "+a.Name+" =", a.Str.Modifier())
-	fmt.Println(a.Int.Name+" Modifier for: "+a.Name+" =", a.Int.Modifier())
-	fmt.Println(a.Dex.Name+" Modifier for: "+a.Name+" =", a.Dex.Modifier())
-	fmt.Println("Max Focus for", a.Name, "=", a.MaxFocus())
+	//	fmt.Println(a.Conditions)
+	//	fmt.Println()
+	//	fmt.Println(a.Str.Name+" Modifier for: "+a.Name+" =", a.Str.Modifier())
+	//	fmt.Println(a.Int.Name+" Modifier for: "+a.Name+" =", a.Int.Modifier())
+	//	fmt.Println(a.Dex.Name+" Modifier for: "+a.Name+" =", a.Dex.Modifier())
+	//	fmt.Println("Max Focus for", a.Name, "=", a.MaxFocus())
 }
