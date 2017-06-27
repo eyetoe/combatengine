@@ -12,7 +12,6 @@ type Agent struct {
 	Dead   bool
 	Focus  int
 
-	//Conditions []Condition
 	Conditions map[string]Condition
 }
 
@@ -42,11 +41,22 @@ func (a Agent) Attack(d Agent) *Agent {
 	return &a
 }
 
+func (a *Agent) Tick(c Condition) {
+	if c.Duration == 1 {
+		a.removeCondition(c)
+	} else if c.Duration != 0 {
+		var n Condition = c
+		n.Duration -= 1
+		a.Conditions[n.Name] = n
+	}
+}
+
 func (a *Agent) NewTurn() {
 	fmt.Println("<---: Starting new turn")
-	for c, f := range a.Conditions {
-		fmt.Println("Applying: ", c)
-		f.Affect(a)
+	for l, c := range a.Conditions {
+		fmt.Println("Applying: ", l)
+		c.Affect(a)
+		a.Tick(c)
 	}
 	return
 }

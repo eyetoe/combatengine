@@ -1,23 +1,14 @@
 package main
 
 type Condition struct {
-	Name         string
-	BaseDuration int
-	Duration     int
-	//Affect       func(Agent) Agent
-	Affect func(*Agent)
+	Name     string
+	Duration int
+	Affect   func(*Agent)
 }
-
-/*
-func (c *Condition) Apply() {
-	c.Duration = c.BaseDuration
-	return
-}
-*/
 
 var Regeneration = Condition{
-	Name:         "Natural Health Recovery",
-	BaseDuration: 0,
+	Name:     "Natural Health Recovery",
+	Duration: 0,
 	Affect: func(a *Agent) {
 		a.HealthAdjust(1)
 		return
@@ -25,8 +16,8 @@ var Regeneration = Condition{
 }
 
 var OnFire = Condition{
-	Name:         "OnFire",
-	BaseDuration: 3,
+	Name:     "OnFire",
+	Duration: 3,
 	Affect: func(a *Agent) {
 		a.HealthAdjust(-2)
 		return

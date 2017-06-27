@@ -39,6 +39,9 @@ func main() {
 
 	Hero.addCondition(Regeneration)
 	Hero.addCondition(OnFire)
+	for l, c := range Hero.Conditions {
+		fmt.Println("Condition:", l, "\n	Turns Left:", c.Duration)
+	}
 	/*
 		Hero.Print()
 		fmt.Println()
@@ -52,11 +55,13 @@ func main() {
 	for l := 0; l < 3; l++ {
 		Hero.NewTurn()
 		fmt.Println("Hero Health: ", Hero.Health.Val)
-		fmt.Println("boop")
+		for l, c := range Hero.Conditions {
+			fmt.Println("Condition:", l, "\n	Turns Left:", c.Duration)
+		}
 		fmt.Println()
 	}
 
-	fmt.Println("Die Roll:", Roll(1, 20))
-	Hero.Print()
+	//fmt.Println("Die Roll:", Roll(1, 20))
+	//Hero.Print()
 
 }
