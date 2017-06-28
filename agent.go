@@ -51,16 +51,6 @@ func (a *Agent) Tick(c Condition) {
 	}
 }
 
-func (a *Agent) NewTurn() {
-	fmt.Println("<-------------------------------------------: Starting new turn")
-	for l, c := range a.Conditions {
-		fmt.Println("<: ", l, " ticked...")
-		c.Affect(a)
-		a.Tick(c)
-	}
-	return
-}
-
 func (a *Agent) HealthAdjust(h int) {
 	switch {
 	case a.Health.Val+h > a.Health.BaseVal:
@@ -79,14 +69,33 @@ func (a Agent) MaxFocus() int {
 	return a.Int.Val / 10
 }
 
+func (a Agent) ShowConditions() {
+	fmt.Println("<---: Active Conditions:")
+	for l, c := range a.Conditions {
+		fmt.Println("<---:", l, "	(Duration:", c.Duration, ")")
+	}
+
+}
+
+func (a *Agent) NewTurn() {
+	fmt.Println("<-------------------------------------------: Starting new turn")
+	for l, c := range a.Conditions {
+		fmt.Println("  <: ", l, " ticked...")
+		c.Affect(a)
+		a.Tick(c)
+	}
+	a.Print()
+	return
+}
+
 func (a Agent) Print() {
 	//fmt.Printf("%+v", a)
 	fmt.Println("Name:", a.Name)
-	fmt.Println("<:", a.Str.Name, a.Str.Val)
-	fmt.Println("<:", a.Int.Name, a.Int.Val)
-	fmt.Println("<:", a.Dex.Name, a.Dex.Val)
-	fmt.Println("<:", a.Health.Name, a.Health.Val)
-	ShowConditions(a)
+	fmt.Println("<:", a.Str.Val, a.Str.Name, "		+", a.Str.Modifier())
+	fmt.Println("<:", a.Int.Val, a.Int.Name, "	+", a.Int.Modifier())
+	fmt.Println("<:", a.Dex.Val, a.Dex.Name, "	+", a.Dex.Modifier())
+	fmt.Println("<:", a.Health.Val, a.Health.Name)
+	a.ShowConditions()
 	//fmt.Println("Focus Points: ", a.Focus)
 	//	fmt.Println(a.Conditions)
 	//	fmt.Println()
