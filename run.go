@@ -35,6 +35,10 @@ func main() {
 	fmt.Println(":---> Adding conditions:")
 	Hero.addCondition(Regeneration)
 	Hero.addCondition(OnFire)
+	Hero.addCondition(Cursed)
+	Hero.addCondition(Dazed)
+	Hero.addCondition(Feeble)
+	Hero.addCondition(Insight)
 	Continue()
 
 	for l := 0; l < 20; l++ {

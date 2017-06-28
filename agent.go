@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 type Agent struct {
 	Name string
@@ -76,15 +79,34 @@ func (a Agent) ShowConditions() {
 	}
 
 }
+func (a *Agent) Rebase() {
+	a.Str.Val = a.Str.BaseVal
+	a.Int.Val = a.Int.BaseVal
+	a.Dex.Val = a.Dex.BaseVal
+}
+
+func (a *Agent) Pulse() {
+	if a.Health.Val <= 0 {
+		a.Dead = true
+		fmt.Println("Alas,", a.Name, "has fallen!")
+		os.Exit(0)
+		return
+	} else {
+		fmt.Println(a.Name, "persists!")
+		return
+	}
+}
 
 func (a *Agent) NewTurn() {
 	fmt.Println("<-------------------------------------------: Starting new turn")
+	a.Rebase()
 	for l, c := range a.Conditions {
 		fmt.Println("  <: ", l, " ticked...")
 		c.Affect(a)
 		a.Tick(c)
 	}
 	a.Print()
+	a.Pulse()
 	return
 }
 
