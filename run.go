@@ -9,6 +9,13 @@ import (
 // yo dummy! add interfaces to all items, so they support conditions method which applies conditions
 
 func main() {
+
+	//var s = Screen{Name: "screen"}
+	var s = Screen{120, 50}
+
+	s.Resize()
+	s.Layout()
+	Continue()
 	ClearScreen()
 
 	/*

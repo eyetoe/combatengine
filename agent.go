@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	colors "github.com/eyetoe/foobarbaz/colors"
 )
 
 type Agent struct {
@@ -73,9 +75,10 @@ func (a Agent) MaxFocus() int {
 }
 
 func (a Agent) ShowConditions() {
-	fmt.Println("<---: Active Conditions:")
+	fmt.Println("\n<: Active Conditions:")
 	for l, c := range a.Conditions {
-		fmt.Println("<---:", l, "	(Duration:", c.Duration, ")")
+		//fmt.Println("<---:", l, "	(Duration:", c.Duration, ")")
+		fmt.Println("	", l, c.Duration)
 	}
 
 }
@@ -98,10 +101,11 @@ func (a *Agent) Pulse() {
 }
 
 func (a *Agent) NewTurn() {
-	fmt.Println("<-------------------------------------------: Starting new turn")
+	fmt.Println("<--------------------------------------: Starting new turn")
 	a.Rebase()
+	fmt.Println(colors.Blue("appling conditions..."))
 	for l, c := range a.Conditions {
-		fmt.Println("  <: ", l, " ticked...")
+		fmt.Println("	", c.Color(l), colors.Black("ticked..."))
 		c.Affect(a)
 		a.Tick(c)
 	}
@@ -112,11 +116,12 @@ func (a *Agent) NewTurn() {
 
 func (a Agent) Print() {
 	//fmt.Printf("%+v", a)
-	fmt.Println("Name:", a.Name)
-	fmt.Println("<:", a.Str.Val, a.Str.Name, "		+", a.Str.Modifier())
-	fmt.Println("<:", a.Int.Val, a.Int.Name, "	+", a.Int.Modifier())
-	fmt.Println("<:", a.Dex.Val, a.Dex.Name, "	+", a.Dex.Modifier())
-	fmt.Println("<:", a.Health.Val, a.Health.Name)
+	fmt.Println()
+	fmt.Println("<: Name:", a.Name)
+	fmt.Println("	", a.Str.Val, "	", a.Str.Name, "	+", a.Str.Modifier())
+	fmt.Println("	", a.Int.Val, "	", a.Int.Name, "	+", a.Int.Modifier())
+	fmt.Println("	", a.Dex.Val, "	", a.Dex.Name, "	+", a.Dex.Modifier())
+	fmt.Println("	", a.Health.Val, "	", a.Health.Name)
 	a.ShowConditions()
 	//fmt.Println("Focus Points: ", a.Focus)
 	//	fmt.Println(a.Conditions)
