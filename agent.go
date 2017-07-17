@@ -3,23 +3,54 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 
-	colors "github.com/eyetoe/foobarbaz/colors"
+	. "github.com/eyetoe/foobarbaz/colors"
+	. "github.com/eyetoe/foobarbaz/util"
 )
 
+////////////////////////////////////////////////////////////////////////////////
 type Agent struct {
 	Name string
 	Str  Stat
 	Int  Stat
 	Dex  Stat
 
-	Health Stat
-	Dead   bool
-	Focus  int
+	Health    Stat
+	Dead      bool
+	Focus     int
+	AI        bool
+	FoeMaxHit int
+	/* Alternative names for Focus
+	Do stuff points DSP
+	Moxie
+	Energy
+	Exertion
+	Red Bull Points
+	Concentration
+	Reserves
+	Multi-tasking points
+	Threads
+	Tasks
+	Determination
+	Will
+	Drive
+	Stamina
+	Endurance
+	Potential
+	Motivation
+
+	*/
 
 	Conditions map[string]Condition
 }
 
+////////////////////////////////////////////////////////////////////////////////
+func (a *Agent) Initiative() int {
+	return Roll(1, 100) + (a.Int.Val+a.Dex.Val)/2
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // map maker method
 func (d *Agent) addCondition(c Condition) {
 	//if len(d.Conditions) == 0 { // also works
@@ -29,14 +60,18 @@ func (d *Agent) addCondition(c Condition) {
 	} else {
 		d.Conditions[c.Name] = c
 	}
+	fmt.Println(c.Color(c.Name), ":", c.Describe["self"])
+	fmt.Println(c.Color(c.Name), ":", c.Describe["target"])
 	return
 }
 
+////////////////////////////////////////////////////////////////////////////////
 func (d *Agent) removeCondition(c Condition) {
 	delete(d.Conditions, c.Name)
 	return
 }
 
+/*
 func (a Agent) Attack(d Agent) *Agent {
 	a.Focus = a.Focus + a.MaxFocus()
 	if a.Focus > a.MaxFocus() {
@@ -45,7 +80,9 @@ func (a Agent) Attack(d Agent) *Agent {
 	fmt.Println(a.Name + " attacks " + d.Name)
 	return &a
 }
+*/
 
+////////////////////////////////////////////////////////////////////////////////
 func (a *Agent) Tick(c Condition) {
 	if c.Duration == 1 {
 		a.removeCondition(c)
@@ -56,6 +93,7 @@ func (a *Agent) Tick(c Condition) {
 	}
 }
 
+////////////////////////////////////////////////////////////////////////////////
 func (a *Agent) HealthAdjust(h int) {
 	switch {
 	case a.Health.Val+h > a.Health.BaseVal:
@@ -74,20 +112,42 @@ func (a Agent) MaxFocus() int {
 	return a.Int.Val / 10
 }
 
+/*
 func (a Agent) ShowConditions() {
-	fmt.Println("\n<: Active Conditions:")
+	fmt.Println(CyanBU("\nActive conditions..."))
 	for l, c := range a.Conditions {
-		//fmt.Println("<---:", l, "	(Duration:", c.Duration, ")")
-		fmt.Println("	", l, c.Duration)
+		fmt.Println("	", c.Color(l), Blue(c.Duration))
 	}
 
 }
+*/
+
+////////////////////////////////////////////////////////////////////////////////
+func (a Agent) ShowConditions() {
+	fmt.Printf(CyanBU("\nConditions:"))
+	fmt.Printf(" ")
+	for l, c := range a.Conditions {
+		fmt.Printf("%s", c.Color(l))
+		fmt.Printf("%s", ":")
+		fmt.Printf("%s", Blue(strconv.Itoa(c.Duration)))
+		fmt.Printf("%s", " ")
+	}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
 func (a *Agent) Rebase() {
 	a.Str.Val = a.Str.BaseVal
 	a.Int.Val = a.Int.BaseVal
 	a.Dex.Val = a.Dex.BaseVal
+	// reset focus
+	a.Focus = a.Focus + a.MaxFocus()
+	if a.Focus > a.MaxFocus() {
+		a.Focus = a.MaxFocus()
+	}
 }
 
+////////////////////////////////////////////////////////////////////////////////
 func (a *Agent) Pulse() {
 	if a.Health.Val <= 0 {
 		a.Dead = true
@@ -103,9 +163,9 @@ func (a *Agent) Pulse() {
 func (a *Agent) NewTurn() {
 	fmt.Println("<--------------------------------------: Starting new turn")
 	a.Rebase()
-	fmt.Println(colors.Blue("appling conditions..."))
+	fmt.Println(CyanBU("Appling conditions..."))
 	for l, c := range a.Conditions {
-		fmt.Println("	", c.Color(l), colors.Black("ticked..."))
+		fmt.Println("	", c.Color(l), Black("ticked..."))
 		c.Affect(a)
 		a.Tick(c)
 	}
@@ -122,12 +182,100 @@ func (a Agent) Print() {
 	fmt.Println("	", a.Int.Val, "	", a.Int.Name, "	+", a.Int.Modifier())
 	fmt.Println("	", a.Dex.Val, "	", a.Dex.Name, "	+", a.Dex.Modifier())
 	fmt.Println("	", a.Health.Val, "	", a.Health.Name)
+	fmt.Println("	", a.Focus, "	", "Focus Points")
 	a.ShowConditions()
-	//fmt.Println("Focus Points: ", a.Focus)
-	//	fmt.Println(a.Conditions)
-	//	fmt.Println()
-	//	fmt.Println(a.Str.Name+" Modifier for: "+a.Name+" =", a.Str.Modifier())
-	//	fmt.Println(a.Int.Name+" Modifier for: "+a.Name+" =", a.Int.Modifier())
-	//	fmt.Println(a.Dex.Name+" Modifier for: "+a.Name+" =", a.Dex.Modifier())
-	//	fmt.Println("Max Focus for", a.Name, "=", a.MaxFocus())
+}
+
+// Render character status bar
+func (c Agent) StatusBar() {
+	// For sanity layout the StatusBar vertically while printing horizonal
+	fmt.Println()
+	fmt.Printf("%s", Fbb("FooBarBaz:"))
+	fmt.Printf("%s", Yellow(" "))
+	fmt.Printf("%s", BlueU(c.Name))
+	fmt.Printf("%s", Yellow(" S:"))
+	fmt.Printf("%s", Green(strconv.Itoa(c.Str.Val)))
+	fmt.Printf("%s", Yellow(" I:"))
+	fmt.Printf("%s", Green(strconv.Itoa(c.Int.Val)))
+	fmt.Printf("%s", Yellow(" D:"))
+	fmt.Printf("%s", Green(strconv.Itoa(c.Dex.Val)))
+	fmt.Printf("%s", Yellow(" HP:"))
+	fmt.Printf("%s", Green(strconv.Itoa(c.Health.BaseVal)))
+	fmt.Printf("%s", Yellow("|"))
+
+	if c.Health.Val < c.Health.BaseVal {
+		fmt.Printf("%s", Red(strconv.Itoa(c.Health.Val)))
+	} else {
+		fmt.Printf("%s", Green(strconv.Itoa(c.Health.Val)))
+	}
+	c.ShowConditions()
+
+	/*
+		fmt.Printf("%s", Yellow(" XP:"))
+		if StatCost(c) <= c.Exp {
+			fmt.Printf("%s", Green(strconv.Itoa(c.Exp)))
+		} else {
+			fmt.Printf("%s", strconv.Itoa(c.Exp))
+		}
+
+		fmt.Printf("%s", Yellow(" W:"))
+		fmt.Printf("%s", ItemC(c.Weap.Name))
+		fmt.Printf("%s", Yellow(" A:"))
+		fmt.Printf("%s", ItemC(c.Armor.Name))
+		fmt.Printf("%s", Yellow(" T:"))
+		fmt.Printf("%s", ItemC(c.Trink.Name))
+	*/
+	fmt.Println()
+	Meter(c.Health.Val, c.Health.BaseVal, c.FoeMaxHit, "Health", "█", "hero")
+	// interesting palate of ascii for perusing
+	//░▒█░   ░ ████▓▒░░ ████▓▒░░▓█  ▀█▓ ▓█   ▓██▒░██▓ ▒██▒░▓█  ▀█▓ ▓█   ▓██▒███████▒
+}
+func FoeBar(c Agent, f Agent) {
+	// this may be useful it clears the screen
+	//fmt.Print("[H[J")
+
+	// Color Foe's name and show victory chance percentage
+	/*
+		odds := Odds(&c, &f)
+		var conName string
+		switch {
+		case odds >= 80:
+			conName = fmt.Sprintf(GreenU("%s:%d%%"), f.Name, odds)
+		case odds >= 60:
+			conName = fmt.Sprintf(CyanU("%s:%d%%"), f.Name, odds)
+		case odds >= 40:
+			conName = fmt.Sprintf(BlueU("%s:%d%%"), f.Name, odds)
+		case odds >= 20:
+			conName = fmt.Sprintf(YellowU("%s:%d%%"), f.Name, odds)
+		case odds >= 0:
+			conName = fmt.Sprintf(RedU("%s:%d%%"), f.Name, odds)
+		}
+	*/
+
+	var conName string
+	odds := 0
+	conName = fmt.Sprintf(RedU("%s:%d%%"), f.Name, odds)
+	// For sanity layout the StatusBar vertically here although printing horizonal
+	fmt.Printf("%s", Black("    :"))
+	fmt.Printf("%s", RedU(conName))
+	fmt.Printf("%s", Yellow(" S:"))
+	fmt.Printf("%s", Green(strconv.Itoa(f.Str.Val)))
+	fmt.Printf("%s", Yellow(" I:"))
+	fmt.Printf("%s", Green(strconv.Itoa(f.Int.Val)))
+	fmt.Printf("%s", Yellow(" D:"))
+	fmt.Printf("%s", Green(strconv.Itoa(f.Dex.Val)))
+	fmt.Printf("%s", Yellow(" HP:"))
+	fmt.Printf("%s", Green(strconv.Itoa(f.Health.BaseVal)))
+	fmt.Printf("%s", Yellow("|"))
+	fmt.Printf("%s", Red(strconv.Itoa(f.Health.Val)))
+	/*
+		fmt.Printf("%s", Yellow(" W:"))
+		fmt.Printf("%s", White(f.Weap.Name))
+		fmt.Printf("%s", Yellow(" A:"))
+		fmt.Printf("%s", White(f.Armor.Name))
+		fmt.Printf("%s", Yellow(" T:"))
+		fmt.Printf("%s", White(f.Trink.Name))
+	*/
+	fmt.Println()
+	Meter(f.Health.Val, f.Health.BaseVal, f.FoeMaxHit, "Health", "█", "foe")
 }
