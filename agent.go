@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"os"
 	"strconv"
 
@@ -43,6 +44,20 @@ type Agent struct {
 	*/
 
 	Conditions map[string]Condition
+}
+
+////////////////////////////////////////////////////////////////////////////////
+func (a *Agent) Template() {
+	//tmpl, err := template.ParseFiles("templates/agent.template")
+	tmpl, err := template.ParseGlob("templates/*.template")
+	if err != nil {
+		panic(err)
+	}
+	// repeat this block for more template filess
+	err = tmpl.ExecuteTemplate(os.Stdout, "agent.template", a)
+	if err != nil {
+		panic(err)
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////

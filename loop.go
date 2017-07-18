@@ -28,6 +28,9 @@ var Hero = Agent{
 func main() {
 	//	Debug()
 
+	Hero.Template()
+	Continue()
+
 	for {
 		Console.Choose()
 	}
