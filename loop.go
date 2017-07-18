@@ -28,32 +28,9 @@ var Hero = Agent{
 func main() {
 	//	Debug()
 
-	Hero.Template()
-	Continue()
-
 	for {
 		Console.Choose()
 	}
-	//TestChoices()
-	/*
-		Continue()
-
-		Hero.StatusBar()
-		Monster.StatusBar()
-		Hero.addCondition(Regen)
-		Hero.addCondition(Burning)
-		Hero.addCondition(Cursed)
-		Hero.addCondition(Dazed)
-		Hero.addCondition(Feeble)
-		Hero.addCondition(Insight)
-		Hero.addCondition(Paralized)
-		Hero.addCondition(Petrified)
-
-		Hero.StatusBar()
-		Monster.StatusBar()
-		//FoeBar(Hero, Monster)
-		//Monster.StatusBar()
-	*/
 }
 
 func Battle(a, b *Agent) {

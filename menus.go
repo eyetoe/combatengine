@@ -39,6 +39,13 @@ var Console = MenuList{
 				Action.Choose()
 			},
 		},
+		Choice{
+			Item: "Agent Template",
+			Action: func() {
+				Hero.Template()
+				Continue()
+			},
+		},
 	},
 }
 

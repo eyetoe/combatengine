@@ -33,6 +33,7 @@ func (m MenuList) Choose() {
 		for i, c := range m.Choices {
 			fmt.Println(CyanU(i), c.Item)
 		}
+		fmt.Printf(Blue("> "))
 		choice, _, _ := GetChar()
 		fmt.Println("choice was:", choice)
 
