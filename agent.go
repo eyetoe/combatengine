@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"os"
@@ -44,6 +45,45 @@ type Agent struct {
 	*/
 
 	Conditions map[string]Condition
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//func (a *Agent) HealthMeter(num, max, fmax int, l, t string) string {
+func (a *Agent) HealthMeter() string {
+	// Meter(a.Health.Val, a.Health.BaseVal, a.FoeMaxHit, "Health", "█")
+	token := "█"
+
+	// calculate the actual percentage
+	p := float32(a.Health.Val) / float32(a.Health.BaseVal)
+
+	barWidth := 80
+
+	// prepare as percentage of barWidth columns
+	percentBar := p * float32(barWidth)
+
+	// display meter
+	fmt.Printf("%s	%s	:", Yellow("Health"), White(strconv.Itoa(a.Health.Val)))
+
+	var buffer bytes.Buffer
+
+	// drawing from left to right
+	for c := 1; c <= barWidth; c++ {
+
+		if c <= int(percentBar) {
+			fmt.Printf(Cyan(token))
+		} else {
+			if a.Health.Val <= a.FoeMaxHit {
+				buffer.WriteString(Red(token))
+			} else {
+				buffer.WriteString(Black(token))
+			}
+		}
+		if c == barWidth {
+			buffer.WriteString(":")
+		}
+	}
+	return buffer.String()
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
