@@ -13,15 +13,18 @@ type Choice struct {
 	Item string
 	//Action func(...interface{})
 	Action func()
+	Hotkey string
 }
 
 type MenuList struct {
 	Name        string
 	Description string
 	Choices     []Choice
+	Tabs        []Choice
 	Header      func()
 }
 
+// Choose()
 func (m MenuList) Choose() {
 	for {
 		if m.Header != nil {
@@ -32,6 +35,11 @@ func (m MenuList) Choose() {
 		fmt.Println(Blue(m.Description))
 		for i, c := range m.Choices {
 			fmt.Println(CyanU(i), c.Item)
+		}
+		if m.Tabs != nil {
+			for _, o := range m.Tabs {
+				fmt.Printf("%s%s%s%s%s", "(", o.Hotkey, ")", o.Item, " ") // (S)pells
+			}
 		}
 		fmt.Printf(Blue("> "))
 		choice, _, _ := GetChar()

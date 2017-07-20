@@ -7,6 +7,63 @@ import (
 	. "github.com/eyetoe/foobarbaz/util"
 )
 
+var Navigation = MenuList{
+	Name:        "",
+	Description: "",
+	Choices: []Choice{
+		Choice{
+			Hotkey: Red("E"),
+			Item:   "xit",
+			Action: func() {
+				fmt.Println("You pressed E")
+				Continue()
+			},
+		},
+		Choice{
+			Hotkey: Red("S"),
+			Item:   "pells",
+			Action: func() {
+				fmt.Println("You pressed S")
+				Continue()
+			},
+		},
+		Choice{
+			Hotkey: Red("W"),
+			Item:   "eapon",
+			Action: func() {
+				fmt.Println("You pressed W")
+				Continue()
+			},
+		},
+	},
+	Tabs: []Choice{
+		Choice{
+			Hotkey: Red("E"),
+			Item:   "xit",
+			Action: func() {
+				fmt.Println("You pressed E")
+				Continue()
+			},
+		},
+		Choice{
+			Hotkey: Red("S"),
+			Item:   "pells",
+			Action: func() {
+				fmt.Println("You pressed S")
+				Continue()
+			},
+		},
+		Choice{
+			Hotkey: Red("W"),
+			Item:   "eapon",
+			Action: func() {
+				fmt.Println("You pressed W")
+				Continue()
+			},
+		},
+	},
+}
+
 var Console = MenuList{
 	Name:        "",
 	Description: "",
@@ -43,6 +100,13 @@ var Console = MenuList{
 			Item: "Agent Template",
 			Action: func() {
 				Hero.Template()
+				Continue()
+			},
+		},
+		Choice{
+			Item: "Test Navigation Bar",
+			Action: func() {
+				Navigation.Choose()
 				Continue()
 			},
 		},
