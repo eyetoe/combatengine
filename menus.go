@@ -110,6 +110,13 @@ var Console = MenuList{
 				Continue()
 			},
 		},
+		Choice{
+			Item: "Test Key Reader",
+			Action: func() {
+				//	TestKeyReader()
+				Continue()
+			},
+		},
 	},
 }
 

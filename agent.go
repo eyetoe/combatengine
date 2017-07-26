@@ -21,7 +21,7 @@ type Agent struct {
 	Health    Stat
 	Dead      bool
 	Focus     int
-	AI        bool
+	Player    bool
 	FoeMaxHit int
 	/* Alternative names for Focus
 	Do stuff points DSP

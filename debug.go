@@ -33,7 +33,7 @@ func Debug() {
 		Int:    Stat{"Intelligence", 10, 10},
 		Dex:    Stat{"Dexterity", 10, 10},
 		Health: Stat{"Health", 10, 10},
-		AI:     true,
+		Player: true,
 		Dead:   false,
 	}
 

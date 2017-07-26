@@ -12,7 +12,7 @@ var Monster = Agent{
 	Int:    Stat{"Intelligence", 10, 10},
 	Dex:    Stat{"Dexterity", 10, 10},
 	Health: Stat{"Health", 10, 10},
-	AI:     true,
+	Player: true,
 	Dead:   false,
 }
 
@@ -64,14 +64,14 @@ func Battle(a, b *Agent) {
 func Attack(a, d *Agent) {
 	var attackRoll = Roll(1, 100)
 	var defenseRoll = Roll(1, 100)
-	if a.AI == false && a.Focus > 0 {
+	if a.Player == true && a.Focus > 0 {
 		if Confirm("Use focus point to attack?") {
 			fmt.Println(a.Name, "attacks", d.Name)
 			fmt.Println(a.Name, "rolled:", attackRoll)
 			fmt.Println(d.Name, "rolled:", defenseRoll)
 			a.Focus--
 		}
-	} else if a.AI == true && a.Focus > 0 {
+	} else if a.Player == false && a.Focus > 0 {
 		fmt.Println(a.Name, "is attacking!")
 		fmt.Println(a.Name, "attacks", d.Name)
 		fmt.Println(a.Name, "rolled:", attackRoll)
