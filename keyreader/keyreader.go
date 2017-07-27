@@ -17,11 +17,13 @@ type Choice struct {
 	Hotkey string
 }
 
+type ChoiceSet []Choice
+
 type MenuList struct {
 	Name        string
 	Description string
-	Choices     []Choice
-	Tabs        []Choice
+	Choices     ChoiceSet
+	Tabs        ChoiceSet
 	Header      func()
 }
 
