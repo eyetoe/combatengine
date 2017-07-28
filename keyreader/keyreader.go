@@ -32,8 +32,10 @@ func (m MenuList) Choose() {
 	for {
 		// Check for header and run if defined
 		if m.Header != nil {
-			ClearScreen()
+			//ClearScreen()
+			//fmt.Printf("\r")
 			m.Header()
+			//fmt.Printf("\r")
 		}
 		// Displey name if defined
 		if m.Name != "" {
@@ -63,6 +65,16 @@ func (m MenuList) Choose() {
 		// prompt
 		fmt.Printf(Blue("\r> "))
 
+		/*
+			if c, err := strconv.Atoi(choice); err == nil && c < len(m.Choices) {
+				fmt.Printf("%T, %v", c, c)
+				fmt.Println()
+				m.Choices[c].Action()
+				break
+			} else {
+				continue
+			}
+		*/
 		// Get input channel go routine
 		select {
 		case choice := <-AlphaInput:
@@ -70,6 +82,7 @@ func (m MenuList) Choose() {
 				fmt.Println("Alpha input detected")
 			}
 		case choice := <-IntInput:
+			m.Choices[choice].Action()
 			if choice == choice {
 				fmt.Println("Integer input detected")
 			}

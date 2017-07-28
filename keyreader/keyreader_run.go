@@ -7,6 +7,26 @@ import (
 	. "github.com/eyetoe/foobarbaz/util"
 )
 
+var Monster = Agent{
+	Name:   "Monster",
+	Str:    Stat{"Strength", 10, 10},
+	Int:    Stat{"Intelligence", 10, 10},
+	Dex:    Stat{"Dexterity", 10, 10},
+	Health: Stat{"Health", 10, 10},
+	Player: true,
+	Dead:   false,
+}
+
+var Hero = Agent{
+	Name:   "Grok",
+	Str:    Stat{"Strength", 10, 10},
+	Int:    Stat{"Intelligence", 15, 15},
+	Dex:    Stat{"Dexterity", 15, 15},
+	Health: Stat{"Health", 10, 10},
+	Dead:   false,
+	Nl:     "\r",
+}
+
 var MainTab = ChoiceSet{
 	Choice{
 		Hotkey: Red("A"),
@@ -60,10 +80,9 @@ var MainTab = ChoiceSet{
 var MainList = ChoiceSet{
 	Choice{
 		//Hotkey: Red("E"),
-		Item: "Apple",
+		Item: "Self Condition",
 		Action: func() {
-			fmt.Println("You pressed Apple")
-			Continue()
+			SelfCondition.Choose()
 		},
 	},
 	Choice{
@@ -91,9 +110,11 @@ var Navigation = MenuList{
 	Tabs: MainTab,
 	// List Choices
 	Choices: MainList,
+	Header:  func() { Hero.Template() },
 }
 
 func main() {
+
 	AlphaInput = make(chan string)
 	IntInput = make(chan int)
 	go KeyReader()
